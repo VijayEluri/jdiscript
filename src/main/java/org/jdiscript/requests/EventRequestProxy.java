@@ -19,7 +19,7 @@ import com.sun.jdi.request.EventRequest;
  * configuration methods (non-void EventRequest methods are unaffected).
  * <p>
  * Additionally, EventRequestProxy provides the common implementation of the
- * addHandler method specified by JDIScriptEventRequest subinterfaces.
+ * addHandler method specified by {@link JDIScriptEventRequest} subinterfaces.
  */
 public class EventRequestProxy implements InvocationHandler {
 
@@ -27,9 +27,10 @@ public class EventRequestProxy implements InvocationHandler {
      * Convenience method for creating a new dynamic proxy instance
      * using an EventRequestProxy.
      *
-     * @param origRequest   The EventRequest to proxy.
-     * @param iface         The interface to implement.  This should be one
-     *                      of the {@link JDIScriptEventRequest} subinterfaces.
+     * @param <T>         The type of the interface to implement.
+     * @param origRequest The EventRequest to proxy.
+     * @param iface       The interface to implement.  This should be one
+     *                    of the {@link JDIScriptEventRequest} subinterfaces.
      * @return A dynamic proxy instance implementing the given interface
      *         using an EventRequestProxy.
      */
@@ -105,7 +106,7 @@ public class EventRequestProxy implements InvocationHandler {
                 return proxy;
             }
 
-            DebugEventHandler handler = null;
+            DebugEventHandler handler;
             if(handlerObj instanceof DebugEventHandler) {
                 handler = (DebugEventHandler)handlerObj;
             } else {

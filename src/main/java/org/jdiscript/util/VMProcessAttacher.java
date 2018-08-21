@@ -38,7 +38,6 @@ public class VMProcessAttacher {
         Map<String, Argument> cArgs = connector.defaultArguments();
         cArgs.get("pid").setValue(Integer.toString(pid));
         cArgs.get("timeout").setValue(Integer.toString(timeout));
-        final VirtualMachine vm = connector.attach(cArgs);
-        return vm;
+        return connector.attach(cArgs);
     }
 }

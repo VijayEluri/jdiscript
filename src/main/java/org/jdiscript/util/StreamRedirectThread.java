@@ -65,7 +65,7 @@ class StreamRedirectThread extends Thread {
         this(name, in, new PrintStream(out));
     }
 
-    StreamRedirectThread(String name, InputStream in, PrintStream out) {
+    private StreamRedirectThread(String name, InputStream in, PrintStream out) {
         super(name);
         this.in = new BufferedReader(new InputStreamReader(in));
         this.out = out;

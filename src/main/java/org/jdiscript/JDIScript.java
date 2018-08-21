@@ -76,7 +76,6 @@ import com.sun.jdi.request.VMDeathRequest;
 /**
  * Top-level class encapsulating common operations for working with
  * JDI and jdiscript.
- * <p>
  * <ul>
  *  <li>
  *    Pulls the {@link EventRequestManager} create*Request
@@ -202,6 +201,9 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createAccessWatchpointRequest
+     *
+     * @param field The Field to watch.
+     * @return A chaining wrapper for {@link AccessWatchpointRequest}
      */
     public ChainingAccessWatchpointRequest accessWatchpointRequest(Field field) {
         return accessWatchpointRequest(field, null);
@@ -209,6 +211,10 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createAccessWatchpointRequest
+     *
+     * @param field The Field to watch.
+     * @param handler A handler that fires when the field is accessed.
+     * @return A chaining wrapper for {@link AccessWatchpointRequest}
      */
     public ChainingAccessWatchpointRequest accessWatchpointRequest(Field field, OnAccessWatchpoint handler) {
         return proxy(erm.createAccessWatchpointRequest(field),
@@ -217,6 +223,9 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createBreakpointRequest
+     *
+     * @param location The location to register a breakpoint
+     * @return A chaining wrapper for {@link BreakpointRequest}
      */
     public ChainingBreakpointRequest breakpointRequest(Location location) {
         return breakpointRequest(location, null);
@@ -224,6 +233,10 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createBreakpointRequest
+     *
+     * @param location The location to register a breakpoint
+     * @param handler A handler that fires when the breakpoint is hit.
+     * @return A chaining wrapper for {@link BreakpointRequest}
      */
     public ChainingBreakpointRequest breakpointRequest(Location location, OnBreakpoint handler) {
         return proxy(erm.createBreakpointRequest(location),
@@ -232,6 +245,8 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createClassPrepareRequest
+     *
+     * @return A chaining wrapper for {@link ClassPrepareRequest}
      */
     public ChainingClassPrepareRequest classPrepareRequest() {
         return classPrepareRequest(null);
@@ -239,6 +254,9 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createClassPrepareRequest
+     *
+     * @param handler A handler that fires when the class is prepared.
+     * @return A chaining wrapper for {@link ClassPrepareRequest}
      */
     public ChainingClassPrepareRequest classPrepareRequest(OnClassPrepare handler) {
         return proxy(erm.createClassPrepareRequest(),
@@ -247,6 +265,8 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createClassUnloadRequest
+     *
+     * @return A chaining wrapper for {@link ClassUnloadRequest}
      */
     public ChainingClassUnloadRequest classUnloadRequest() {
         return classUnloadRequest(null);
@@ -254,6 +274,9 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createClassUnloadRequest
+     *
+     * @param handler A handler that fires when the class is unloaded.
+     * @return A chaining wrapper for {@link ClassUnloadRequest}
      */
     public ChainingClassUnloadRequest classUnloadRequest(OnClassUnload handler) {
         return proxy(erm.createClassUnloadRequest(),
@@ -262,6 +285,13 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createExceptionRequest
+     *
+     * @param refType If non-null, report exceptions which are
+     *                instances of refType (and its sub-types).  If null,
+     *                all exceptions will be reported.
+     * @param notifyCaught true to report caught exceptions
+     * @param notifyUncaught true to report uncaught exceptions.
+     * @return A chaining wrapper for {@link ExceptionRequest}
      */
     public ChainingExceptionRequest exceptionRequest(ReferenceType refType,
                                              boolean notifyCaught,
@@ -271,6 +301,13 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createExceptionRequest
+     * @param refType If non-null, report exceptions which are
+     *                instances of refType (and its sub-types).  If null,
+     *                all exceptions will be reported.
+     * @param notifyCaught true to report caught exceptions
+     * @param notifyUncaught true to report uncaught exceptions.
+     * @param handler A handler that fires when a matched exception occurs.
+     * @return A chaining wrapper for {@link ExceptionRequest}
      */
     public ChainingExceptionRequest exceptionRequest(ReferenceType refType,
                                              boolean notifyCaught,
@@ -282,6 +319,8 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createMethodEntryRequest
+     *
+     * @return A chaining wrapper for {@link MethodEntryRequest}
      */
     public ChainingMethodEntryRequest methodEntryRequest() {
         return methodEntryRequest(null);
@@ -289,6 +328,9 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createMethodEntryRequest
+     *
+     * @param handler A handler that fires when a method is entered.
+     * @return A chaining wrapper for {@link MethodEntryRequest}
      */
     public ChainingMethodEntryRequest methodEntryRequest(OnMethodEntry handler) {
         return proxy(erm.createMethodEntryRequest(),
@@ -297,6 +339,8 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createMethodExitRequest
+     *
+     * @return A chaining wrapper for {@link MethodExitRequest}
      */
     public ChainingMethodExitRequest methodExitRequest() {
         return methodExitRequest(null);
@@ -304,6 +348,9 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createMethodExitRequest
+     *
+     * @param handler A handler that fires when a method is exited.
+     * @return A chaining wrapper for {@link MethodExitRequest}
      */
     public ChainingMethodExitRequest methodExitRequest(OnMethodExit handler) {
         return proxy(erm.createMethodExitRequest(),
@@ -312,6 +359,9 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createModificationWatchpointRequest
+     *
+     * @param field The field to watch for modifications.
+     * @return A chaining wrapper for {@link ModificationWatchpointRequest}
      */
     public ChainingModificationWatchpointRequest modificationWatchpointRequest(Field field) {
         return modificationWatchpointRequest(field, null);
@@ -319,6 +369,10 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createModificationWatchpointRequest
+     *
+     * @param field The field to watch for modifications.
+     * @param handler A handler that fires when the field is modified.
+     * @return A chaining wrapper for {@link ModificationWatchpointRequest}
      */
     public ChainingModificationWatchpointRequest modificationWatchpointRequest(Field field, OnModificationWatchpoint handler) {
         return proxy(erm.createModificationWatchpointRequest(field),
@@ -327,6 +381,8 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createMonitorContendedEnteredRequest
+     *
+     * @return A chaining wrapper for {@link MonitorContendedEnteredRequest}
      */
     public ChainingMonitorContendedEnteredRequest monitorContendedEnteredRequest() {
         return monitorContendedEnteredRequest(null);
@@ -334,6 +390,9 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createMonitorContendedEnteredRequest
+     *
+     * @param handler A handler that fires when a contended monitor is entered.
+     * @return A chaining wrapper for {@link MonitorContendedEnteredRequest}
      */
     public ChainingMonitorContendedEnteredRequest monitorContendedEnteredRequest(OnMonitorContendedEntered handler) {
         return proxy(erm.createMonitorContendedEnteredRequest(),
@@ -342,6 +401,8 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createMonitorContendedEnterRequest
+     *
+     * @return A chaining wrapper for {@link MonitorContendedEnterRequest}
      */
     public ChainingMonitorContendedEnterRequest monitorContendedEnterRequest() {
         return monitorContendedEnterRequest(null);
@@ -349,6 +410,9 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createMonitorContendedEnterRequest
+     *
+     * @param handler A handler that fires when a thread attempts to enter a contended monitor.
+     * @return A chaining wrapper for {@link MonitorContendedEnterRequest}
      */
     public ChainingMonitorContendedEnterRequest monitorContendedEnterRequest(OnMonitorContendedEnter handler) {
         return proxy(erm.createMonitorContendedEnterRequest(),
@@ -357,6 +421,8 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createMonitorWaitedRequest
+     *
+     * @return A chaining wrapper for {@link MonitorWaitedRequest}
      */
     public ChainingMonitorWaitedRequest monitorWaitedRequest() {
         return monitorWaitedRequest(null);
@@ -364,6 +430,9 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createMonitorWaitedRequest
+     *
+     * @param handler A handler that fires when a thread has finished waiting on a monitor.
+     * @return A chaining wrapper for {@link MonitorWaitedRequest}
      */
     public ChainingMonitorWaitedRequest monitorWaitedRequest(OnMonitorWaited handler) {
         return proxy(erm.createMonitorWaitedRequest(),
@@ -372,6 +441,8 @@ public class JDIScript {
     
     /**
      * @see EventRequestManager#createMonitorWaitRequest
+     *
+     * @return A chaining wrapper for {@link MonitorWaitRequest}
      */
     public ChainingMonitorWaitRequest monitorWaitRequest() {
         return monitorWaitRequest(null);
@@ -379,6 +450,9 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createMonitorWaitRequest
+     *
+     * @param handler A handler that fires when a thread starts waiting on a monitor.
+     * @return A chaining wrapper for {@link MonitorWaitRequest}
      */
     public ChainingMonitorWaitRequest monitorWaitRequest(OnMonitorWait handler) {
         return proxy(erm.createMonitorWaitRequest(),
@@ -387,6 +461,11 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createStepRequest
+     *
+     * @param thread The thread to step.
+     * @param size The step size.
+     * @param depth The step depth.
+     * @return A chaining wrapper for {@link StepRequest}
      */
     public ChainingStepRequest stepRequest( ThreadReference thread,
                                             int size,
@@ -396,6 +475,12 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createStepRequest
+     *
+     * @param thread The thread to step.
+     * @param size The step size.
+     * @param depth The step depth.
+     * @param handler A handler that fires when the step occurs.
+     * @return A chaining wrapper for {@link StepRequest}
      */
     public ChainingStepRequest stepRequest( ThreadReference thread,
                                             int size,
@@ -407,6 +492,8 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createThreadDeathRequest
+     *
+     * @return A chaining wrapper for {@link ThreadDeathRequest}
      */
     public ChainingThreadDeathRequest threadDeathRequest() {
         return threadDeathRequest(null);
@@ -414,6 +501,9 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createThreadDeathRequest
+     *
+     * @param handler A handler that fires when a thread dies.
+     * @return A chaining wrapper for {@link ThreadDeathRequest}
      */
     public ChainingThreadDeathRequest threadDeathRequest(OnThreadDeath handler) {
         return proxy(erm.createThreadDeathRequest(),
@@ -422,6 +512,8 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createThreadStartRequest
+     *
+     * @return A chaining wrapper for {@link ThreadStartRequest}
      */
     public ChainingThreadStartRequest threadStartRequest() {
         return threadStartRequest(null);
@@ -429,6 +521,9 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createThreadStartRequest
+     *
+     * @param handler A handler that fires when a thread starts.
+     * @return A chaining wrapper for {@link ThreadStartRequest}
      */
     public ChainingThreadStartRequest threadStartRequest(OnThreadStart handler) {
         return proxy(erm.createThreadStartRequest(),
@@ -437,6 +532,8 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createVMDeathRequest
+     *
+     * @return A chaining wrapper for {@link VMDeathRequest}
      */
     public ChainingVMDeathRequest vmDeathRequest() {
         return vmDeathRequest(null);
@@ -444,6 +541,9 @@ public class JDIScript {
 
     /**
      * @see EventRequestManager#createVMDeathRequest
+     *
+     * @param handler A handler that fires when the VM dies.
+     * @return A chaining wrapper for {@link VMDeathRequest}
      */
     public ChainingVMDeathRequest vmDeathRequest(OnVMDeath handler) {
         return proxy(erm.createVMDeathRequest(),
@@ -589,8 +689,6 @@ public class JDIScript {
      * <p>
      * TODO: what should this return?
      *
-     * @param className  A class name suitable for use by
-     *                   {@link ClassPrepareRequest#addClassFilter(String)}
      * @param handler    The callback to execute when the class is prepped.
      */
     public void onClassPrep(final OnClassPrepare handler) {
@@ -741,14 +839,13 @@ public class JDIScript {
      * Creates a breakpointRequest for the exit from the currently executing method 
      * on the given thread.
      * 
-     * @param thread
-     * @param handler
-     * @throws IncompatibleThreadStateException 
-     * @throws AbsentInformationException 
+     * @param thread The thread currently executing the method.
+     * @param handler The handler for the method exit breakpoint event.
+     * @throws IncompatibleThreadStateException if the thread is not suspended in the target VM
+     * @throws AbsentInformationException if there is no line number information for this method.
      */
     public void onCurrentMethodExit(final ThreadReference thread,
-                                    //final OnMethodExit handler) 
-                                    final OnBreakpoint handler) 
+                                    final OnBreakpoint handler)
         throws IncompatibleThreadStateException, AbsentInformationException 
     {
         List<Location> locs = thread.frame(0).location().method().allLineLocations();
@@ -761,10 +858,10 @@ public class JDIScript {
     /**
      * Create a stepRequest and enable it.
      * 
-     * @param thread
-     * @param size
-     * @param depth
-     * @param handler
+     * @param thread The thread to step.
+     * @param size The step size.
+     * @param depth The step depth.
+     * @param handler The handler for the step event.
      */
     public void onStep(final ThreadReference thread,
     		           final int size,
@@ -775,8 +872,8 @@ public class JDIScript {
 
     /**
      * onStep with size=StepRequest.STEP_MIN, depth=StepRequest.STEP_INTO
-     * @param thread
-     * @param handler
+     * @param thread The thread to step into.
+     * @param handler The handler for the step event.
      */
     public void onStepInto(final ThreadReference thread, 
     		               final OnStep handler) {
@@ -785,8 +882,8 @@ public class JDIScript {
     
     /**
      * onStep with size=StepRequest.STEP_MIN, depth=StepRequest.STEP_OVER
-     * @param thread
-     * @param handler
+     * @param thread The thread to step over.
+     * @param handler The handler for the step event.
      */    
     public void onStepOver(final ThreadReference thread,
     					   final OnStep handler) {
@@ -795,8 +892,8 @@ public class JDIScript {
     
     /**
      * onStep with size=StepRequest.STEP_MIN, depth=StepRequest.STEP_OUT
-     * @param thread
-     * @param handler
+     * @param thread The thread to step out.
+     * @param handler The handler for the step event.
      */    
     public void onStepOut(final ThreadReference thread,
     					  final OnStep handler) {

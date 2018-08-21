@@ -56,23 +56,14 @@ import com.sun.jdi.request.EventRequest;
 
 public class DebugEventDispatcher {
 
-    public static final String PROP_KEY = "JDISCRIPT_HANDLER";
+    private static final String PROP_KEY = "JDISCRIPT_HANDLER";
 
-    /**
-     * Get the handlers associated with the given EventRequest.
-     */
     @SuppressWarnings("unchecked")
     public static Set<DebugEventHandler> getHandlers(EventRequest er) {
         Set<DebugEventHandler> out = (Set<DebugEventHandler>)(er.getProperty(PROP_KEY));
         return (out == null) ? Collections.emptySet() : out;  
     }
 
-    /**
-     * Attach a DebugEventHandler to an EventRequest.
-     * <p>
-     * Using this method ensures that a DebugEventDispatcher will be able to
-     * use to dispatch an event for the request to the given handler.
-     */
     public static boolean addHandler(EventRequest er, DebugEventHandler handler) {
         Set<DebugEventHandler> handlers = getHandlers(er);
         if(handlers.isEmpty()) {
@@ -92,9 +83,6 @@ public class DebugEventDispatcher {
         this.handlers.addAll(handlers);
     }
 
-    /**
-     * Dispatch incoming events
-     */
     public void dispatch(final Event event) {
         final EventRequest request = event.request();
         if (request == null) {
@@ -127,7 +115,6 @@ public class DebugEventDispatcher {
         }
     }
 
-    // Dispatching for the full set of possible events.
     public static void doFullDispatch(Event event, DebugEventHandler handler) {
         if(event instanceof BreakpointEvent &&
            handler instanceof OnBreakpoint) {

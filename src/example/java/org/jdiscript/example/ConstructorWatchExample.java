@@ -17,7 +17,7 @@ import com.sun.jdi.ReferenceType;
 
 class ConstructorWatchExample {   
         
-    String OPTIONS = "-cp ./target/classes/";
+    String OPTIONS = "-cp ./build/classes/example/";
     String MAIN = "org.jdiscript.example.HelloWorld";
     
     JDIScript j = new JDIScript(new VMLauncher(OPTIONS, MAIN).start());
@@ -66,7 +66,7 @@ class ConstructorWatchExample {
                 .forEach(m -> j.breakpointRequest(m.location(), breakpoint)
                                .setEnabled(rt.name().startsWith("org.jdiscript")));
         
-        j.vm().allClasses().forEach(c -> setConstructBrks.accept(c));
+        j.vm().allClasses().forEach(setConstructBrks);
         j.onClassPrep(cp -> setConstructBrks.accept(cp.referenceType()));
     };         
 

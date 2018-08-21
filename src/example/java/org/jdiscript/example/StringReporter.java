@@ -41,7 +41,7 @@ import com.sun.jdi.ThreadReference;
  */
 class StringReporter {   
     
-    String OPTIONS = "-cp ./target/classes/";
+    String OPTIONS = "-cp ./build/classes/example/";
     String MAIN = "org.jdiscript.example.HelloWorld";
     
     JDIScript j = new JDIScript(new VMLauncher(OPTIONS, MAIN).start());
@@ -86,7 +86,7 @@ class StringReporter {
                 //A more efficient alternative might be to just set the initial 
                 //breakpoint on the constructor's exit, but in the case of delegating
                 //constructors, that means the inner constructor would be the one 
-                //that 'wins', making the stack trace less informative. Tradeoffs.
+                //that 'wins', making the stack trace less informative. Trade-offs.
                 j.onCurrentMethodExit(tref, ee -> {
                     StringStats stats = strings.computeIfAbsent(oref.toString(),
                                                                 k -> new StringStats());

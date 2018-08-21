@@ -22,10 +22,11 @@ public class VMLauncher {
      * Create a VMStarter that uses the given options and main class to launch
      * a process for debugging.  By default, this initializes a shutdown hook
      * that attempts to kill the created VM when the debugging VM dies.
-     * To override this behavior, use the alternate constructor.
+     * To override this behavior, use the alternate constructor.  This pumps VM
+     * output to {@link System#out} and {@link System#err} by default.
      *
-     * @param options
-     * @param main
+     * @param options Options to pass to VM on launch.
+     * @param main Name of main class to run.
      */
     public VMLauncher(String options, String main) {
         this(options, main, true, System.out, System.err);
@@ -36,9 +37,11 @@ public class VMLauncher {
      * shutdown hook that attempts to kill the created VM when the debugging
      * VM dies.
      *
-     * @param options
-     * @param main
-     * @param killOnShutdown
+     * @param options Options to pass to VM on launch.
+     * @param main Name of main class to run.
+     * @param killOnShutdown True to attempt to kill created VM when debugging VM dies.
+     * @param out Sink for the launched VM's stdout output.
+     * @param err Sink for the launched VM's stderr output.
      */
     public VMLauncher(String options, String main, boolean killOnShutdown,
                       OutputStream out, OutputStream err)
@@ -50,6 +53,18 @@ public class VMLauncher {
         this.err = err;
     }
 
+    /**
+     * Start the VirtualMachine w/ exceptions you can catch.
+     *
+     * @throws java.io.IOException when unable to launch.
+     * Specific exceptions are dependent on the Connector implementation
+     * in use.
+     * @throws IllegalConnectorArgumentsException when one of the
+     * connector arguments is invalid.
+     * @throws VMStartException when the VM was successfully launched, but
+     * terminated with an error before a connection could be established.
+     * @return The started VirtualMachine
+     */
     public VirtualMachine safeStart()
         throws IOException,
                IllegalConnectorArgumentsException,
@@ -69,20 +84,21 @@ public class VMLauncher {
                                           vm.process().getErrorStream(),
                                           err);
         if(killOnShutdown) {
-            Runtime.getRuntime().addShutdownHook(new Thread() {
-                public void run() {
-                    outThread.interrupt();
-                    errThread.interrupt();
-                    vm.process().destroy();
-                }
-            });
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                outThread.interrupt();
+                errThread.interrupt();
+                vm.process().destroy();
+            }));
         }
 
         return vm;
     }
     
     /**
-     * safeStart wrapped to throw RuntimeException.
+     * {@link #safeStart} wrapped to throw RuntimeException.
+     *
+     * @throws RuntimeException If underlying {@link #safeStart} call throws a checked exception.
+     * @return The started VirtualMachine.
      */
     public VirtualMachine start() {
         try {

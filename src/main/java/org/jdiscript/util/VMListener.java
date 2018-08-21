@@ -26,8 +26,7 @@ public class VMListener {
 		throws IOException,
 		       IllegalConnectorArgumentsException
 	{
-		String connectString = lc.startListening(args);
-		return connectString;
+		return lc.startListening(args);
 	}
 	
 	public VirtualMachine next()

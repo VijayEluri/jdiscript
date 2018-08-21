@@ -46,7 +46,7 @@ import com.sun.jdi.event.VMDisconnectEvent;
 /**
  * This class processes incoming JDI events
  *
- * @version @(#) EventThread.java 1.6 05/11/17 04:47:11
+ * @version EventThread.java 1.6 05/11/17 04:47:11
  * @author Robert Field
  * @author Jason Fager
  */
@@ -88,11 +88,10 @@ public class EventThread extends Thread {
         }
     }
 
-    /**
-     * A VMDisconnectedException has happened while dealing with another event.
-     * We need to flush the event queue, dealing only with exit events (VMDeath,
-     * VMDisconnect) so that we terminate correctly.
-     */
+
+    // A VMDisconnectedException has happened while dealing with another event.
+    // We need to flush the event queue, dealing only with exit events (VMDeath,
+    // VMDisconnect) so that we terminate correctly.
     private void handleDisconnectedException() {
         EventQueue queue = vm.eventQueue();
         boolean connected = true;

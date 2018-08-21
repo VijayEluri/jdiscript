@@ -51,14 +51,13 @@ public class VMSocketAttacher {
         if(host != null) {
             cArgs.get("hostname").setValue(host);
         }
-        final VirtualMachine vm = connector.attach(cArgs);
-        return vm;
+        return connector.attach(cArgs);
     }
     
     /**
      * Like safeAttach but wraps any checked exceptions in a RuntimeException.
      * 
-     * @return
+     * @return The attached VirtualMachine.
      */
     public VirtualMachine attach() {
         try {

@@ -13,16 +13,14 @@ class ContentionPrinter {
         VirtualMachine vm = new VMSocketAttacher(12345).attach();
         JDIScript j = new JDIScript(vm);
 
-        j.monitorContendedEnterRequest(e -> {
-            j.printTrace(e, "ContendedEnter for "+e.monitor());
-        }).enable();
+        j.monitorContendedEnterRequest(e -> j.printTrace(e, "ContendedEnter for "+e.monitor())).enable();
 
         j.monitorContendedEnteredRequest(e -> {
             long timestamp = System.currentTimeMillis();
             println(timestamp+": "+e.thread()+": ContendedEntered for "+e.monitor());
         }).enable();
         
-        j.run((OnVMStart) e -> { println("Got StartEvent"); });
+        j.run((OnVMStart) e -> println("Got StartEvent"));
 
         println("Shutting down");
     }
